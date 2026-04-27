@@ -1,19 +1,8 @@
+import java.util.Map;
+
 public class MenuItem {
     private String name;
-    private double price;
-    private String category;
-
-    public MenuItem(String name, double price, String category) {
-        this.name = name;
-        this.price = price;
-        this.category = category;
+    private int prepTimeSeconds;
+    private Map<String, Integer> ingredientsRequired;
+    private boolean available;
     }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public String getName() {
-        return name;
-    }
-}
