@@ -1,16 +1,29 @@
+import javax.naming.Name;
+
 public class Inventory {
-    private String name;
+    private final String name;
     private int quantity;
-    private int lowThreshold;
+    private final int lowThreshold;
+
+    public Inventory(String name, int quantity, int lowThreshold) {
+        this.name = name;
+        this.quantity = quantity;
+        this.lowThreshold = lowThreshold;
+    }
 
     public boolean isLow() {
         return quantity <= lowThreshold;
     }
 
-    public float getQuantity() {
-    return quantity;
+    public int getQuantity() {
+        return quantity;
     }
 
-    public void setQuantity(float v) {
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public String getName() {
+        return name;
     }
 }
