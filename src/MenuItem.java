@@ -1,11 +1,21 @@
 import java.util.Map;
 
+/**
+ * Represents an item that can be ordered from the menu
+ */
 public class MenuItem {
-    private final String name;
-    private final int prepTimeSeconds;
-    private final Map<String, Integer> ingredientsRequired;
+    private String name;
+    private int prepTimeSeconds;
+    private Map<String, Integer> ingredientsRequired;
     private boolean available;
 
+    /**
+     * Creates a new menu item
+     *
+     * @param name item name
+     * @param prepTimeSeconds preparation time in seconds
+     * @param ingredientsRequired ingredients needed to make the item
+     */
     public MenuItem(String name,
                     int prepTimeSeconds,
                     Map<String, Integer> ingredientsRequired) {

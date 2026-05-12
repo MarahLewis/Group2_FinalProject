@@ -1,34 +1,42 @@
 import java.util.List;
 
+/**
+ * Handles menu operations and displays menu items
+ */
 public class MenuService {
-    private final List<MenuItem> menu;
-    private final InventoryChanges inventoryService;
+    private List<MenuItem> menu;
 
-    public MenuService(List<MenuItem> menu,
-                       InventoryChanges inventoryService) {
+    /**
+     * Creates the menu service
+     *
+     * @param menu list of menu items
+     */
+    public MenuService(List<MenuItem> menu) {
 
         this.menu = menu;
-        this.inventoryService = inventoryService;
     }
 
-    public void updateAvailability() {
+    /**
+     * Returns all menu items
+     *
+     * @return menu item list
+     */
+    public List<MenuItem> getMenu() {
+        return menu;
+    }
 
-        for (MenuItem item : menu) {
+    /**
+     * Displays the menu to user
+     */
+    public void printMenu() {
+        System.out.println("\nMenu:");
 
-            // ONLY CHECK — DO NOT CONSUME
-            boolean canMake =
-                    inventoryService.canConsume(item.getIngredientsRequired());
+        for (int i = 0; i < menu.size(); i++) {
 
-            item.setAvailable(canMake);
+            MenuItem item = menu.get(i);
+
+            System.out.println((i +1) + ". " + item.getName() + " - Prep Time: " + item.getPrepTimeSeconds() + " seconds");
         }
     }
 
-    public List<MenuItem> getAvailableMenu() {
-
-        updateAvailability();
-
-        return menu.stream()
-                .filter(MenuItem::isAvailable)
-                .toList();
-    }
 }

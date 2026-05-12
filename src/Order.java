@@ -1,11 +1,20 @@
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Represents a customer order
+ */
 public class Order {
-    private final String id;
-    private final List<MenuItem> items;
-    private final long createdAt;
+    private String id;
+    private List<MenuItem> items;
+    private long createdAt;
 
+    /**
+     * Creates a new order
+     *
+     * @param id order ID
+     * @param items menu items in the order
+     */
     public Order(String id, List<MenuItem> items) {
         this.id = id;
         this.items = items;

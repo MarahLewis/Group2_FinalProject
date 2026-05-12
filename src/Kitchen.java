@@ -1,12 +1,26 @@
+/**
+ * Represents a kitchen station that prepares orders
+ */
+
 public class Kitchen {
-    private final String name;
+    private String name;
     private int currentLoad;
 
+    /**
+     * Creates a kitchen
+     *
+     * @param name kitchen name
+     */
     public Kitchen(String name) {
         this.name = name;
         this.currentLoad = 0;
     }
 
+    /**
+     * Assigns an order to the kitchen
+     *
+     * @param order customer order
+     */
     public void assignOrder(Order order) {
 
         int totalPrep = order.getItems()
@@ -18,7 +32,7 @@ public class Kitchen {
 
         System.out.println("Order " + order.getId()
                 + " assigned to kitchen: " + name
-                + " | Added load = " + totalPrep + " sec");
+                + " | Added prep time: " + totalPrep + " seconds");
     }
 
     public int getCurrentLoad() {

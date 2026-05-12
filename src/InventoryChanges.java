@@ -2,55 +2,57 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * Handles inventory updates and ingredient usage
+ */
 public class InventoryChanges {
-    private final Map<String, Inventory> inventory = new ConcurrentHashMap<>();
-    private final Alert alertService;
+    private Map<String, Inventory> inventory = new HashMap<>();
+    private Alert alertService;
+
+    /**
+     * Creates the inventory service
+     *
+     * @param alertService alert system for low stock warnings
+     */
 
     public InventoryChanges(Alert alertService) {
         this.alertService = alertService;
     }
 
+    /**
+     * Adds new inventory item into the system
+     *
+     * @param item inventory item to add
+     */
+
     public void addInventory(Inventory item) {
         inventory.put(item.getName(), item);
     }
 
-    public void printInventory() {
-        System.out.println("\n=== INVENTORY STATUS ===");
-        for (Inventory inv : inventory.values()) {
-            System.out.println(inv.getName() + " : " + inv.getQuantity());
-        }
-    }
+    /**
+     * Consumes ingredients required for an order
+     *
+     * @param required ingredients needed
+     * @return true if inventory is sufficient
+     */
 
     public synchronized boolean consumeIngredients(Map<String, Integer> required) {
 
         // Check stock first
-        for (Map.Entry<String, Integer> entry : required.entrySet()) {
+        for (String item : required.keySet()) {
 
-            String itemName = entry.getKey();
-            int requiredQty = entry.getValue();
+            Inventory inv = inventory.get(item);
 
-            Inventory inv = inventory.get(itemName);
-
-            if (inv == null) {
-                System.out.println("Missing inventory item: " + itemName);
-                return false;
-            }
-
-            if (inv.getQuantity() < requiredQty) {
-                System.out.println("Not enough stock for: " + itemName);
+            if (inv == null || inv.getQuantity() < required.get(item)) {;
                 return false;
             }
         }
 
-        // Consume stock
-        for (Map.Entry<String, Integer> entry : required.entrySet()) {
+        for (String item : required.keySet()) {
 
-            String itemName = entry.getKey();
-            int requiredQty = entry.getValue();
+            Inventory inv = inventory.get(item);
 
-            Inventory inv = inventory.get(itemName);
-
-            inv.setQuantity(inv.getQuantity() - requiredQty);
+            inv.setQuantity(inv.getQuantity() - required.get(item));
 
             if (inv.isLow()) {
                 alertService.sendLowStockAlert(inv);
@@ -60,21 +62,29 @@ public class InventoryChanges {
         return true;
     }
 
-    public synchronized boolean canConsume(Map<String, Integer> required) {
+    /**
+     * Throws an exception if inventory is insufficient
+     *
+     * @param required ingredients required
+     * @throws InsufficientInventoryException if inventory is too low
+     */
+    public synchronized void consumeIngredientsOrThrow(Map<String, Integer> required) throws InsufficientInventoryException {
+        boolean success = consumeIngredients(required);
 
-        for (Map.Entry<String, Integer> entry : required.entrySet()) {
-
-            String itemName = entry.getKey();
-            int requiredQty = entry.getValue();
-
-            Inventory inv = inventory.get(itemName);
-
-            if (inv == null || inv.getQuantity() < requiredQty) {
-                return false;
-            }
+        if (!success) {
+            throw new InsufficientInventoryException("Not enough inventory to complete order.");
         }
+    }
 
-        return true;
+    /**
+     * Displays inventory levels
+     */
+    public void printInventory() {
+        System.out.println("\nCurrent Inventory:");
+
+        for (Inventory item : inventory.values()) {
+             System.out.println("- " + item.getName() + ": " + item.getQuantity());
+        }
     }
 }
 

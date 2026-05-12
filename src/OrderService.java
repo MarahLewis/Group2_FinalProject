@@ -1,7 +1,16 @@
-public class OrderService {
-    private final InventoryChanges inventoryService;
-    private final KitchenService kitchenService;
+/**
+ * Handles customer order processing
+ */
+public class OrderService implements OrderProcessor{
+    private InventoryChanges inventoryService;
+    private KitchenService kitchenService;
 
+    /**
+     * Creates the order service
+     *
+     * @param inventoryService inventory manager
+     * @param kitchenService kitchen assignment manager
+     */
     public OrderService(InventoryChanges inventoryService,
                         KitchenService kitchenService) {
 
@@ -9,6 +18,13 @@ public class OrderService {
         this.kitchenService = kitchenService;
     }
 
+    /**
+     * Places a customer order
+     *
+     * @param order customer order
+     * @return true if successful
+     */
+    @Override
     public boolean placeOrder(Order order) {
 
         // Consume ingredients for each item
@@ -19,15 +35,24 @@ public class OrderService {
             );
 
             if (!success) {
-                System.out.println("Order failed: " + item.getName());
                 return false;
             }
         }
 
         kitchenService.assignOrder(order);
 
-        System.out.println("Order placed successfully: " + order.getId());
-
         return true;
+    }
+
+    /**
+     * Overloaded order placement method
+     *
+     * @param order customer order
+     * @param customerName customer name
+     * @return true if successful
+     */
+    public boolean placeOrder(Order order, String customerName) {
+        System.out.println("Placing order for: " + customerName);
+        return placeOrder(order);
     }
 }
