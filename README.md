@@ -18,7 +18,7 @@ This system solves that problem by organizing:
     • Kitchen Queue
 
 Orders are placed → added to a FIFO queue → prepared in order →
-and finalized with a receipt that includes totals and discounts.
+and finalized with a confirmation message.
 
 The goal is to demonstrate how OBJECT-ORIENTED PROGRAMMING (OOP)
 can create a structured system that improves organization and
@@ -69,9 +69,6 @@ Cook Prepares Order
         │
         ▼
 Order Completed
-        │
-        ▼
-Receipt Generated
 
 ────────────────────────────────────────────────────────────────
 # TECHNOLOGIES
@@ -82,7 +79,9 @@ Object-Oriented Programming
 Java Collections Framework
 GitHub Version Control
 
-UML diagrams are included in the /docs folder.
+UML diagrams are included.
+
+JavaDocs Link: file:///C:/Users/Sama%20A/Downloads/package-summary.html
 
 ────────────────────────────────────────────────────────────────
 # TEAM CONTRIBUTION
